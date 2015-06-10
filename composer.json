@@ -1,0 +1,34 @@
+{
+    "name": "tenfef/oauth2-myob",
+    "description": "MYOB OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jordan Clist",
+            "email": "jordan@fergusapp.com",
+            "homepage": "https://github.com/tenfef"
+        }        
+    ],
+    "keywords": [
+        "oauth",
+        "oauth2",
+        "client",
+        "authorization",
+        "authorisation",
+        "myob"
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "league/oauth2-client": "~0.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wheniwork\\OAuth2\\Client\\Provider\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wheniwork\\OAuth2\\Client\\Test\\Provider\\": "tests/src/"
+        }
+    }
+}
