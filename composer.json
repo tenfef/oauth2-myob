@@ -23,12 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Tenfef\\OAuth2\\Client\\Provider\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tenfef\\OAuth2\\Client\\Test\\Provider\\": "tests/src/"
+            "Tenfef\\MYOB\\": "src/"
         }
     }
 }

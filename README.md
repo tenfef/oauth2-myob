@@ -12,12 +12,12 @@ composer require 'tenfef/oauth2-myob:dev-master'
 
 ## Usage
 
-Usage is the same as The League's OAuth client, using `League\OAuth2\Client\Provider\MYOB` as the provider.
+Usage is the same as The League's OAuth client, using `Tenfef\MYOB\Provider` as the provider.
 
 ### Authorization Code Flow
 
 ```php
-$provider = new Wheniwork\OAuth2\Client\Provider\MYOB([
+$provider = new Tenfef\MYOB\Provider([
     'clientId'     => '{myob-client-id}',
     'clientSecret' => '{myob-client-secret}',
     'domainPrefix' => '{myob-domain-prefix}',
@@ -53,7 +53,7 @@ if (!isset($_GET['code'])) {
 ## Refreshing a Token
 
 ```php
-$provider = new Wheniwork\OAuth2\Client\Provider\MYOB([
+$provider = new Tenfef\MYOB\Provider([
     'clientId'     => '{myob-client-id}',
     'clientSecret' => '{myob-client-secret}',
     'domainPrefix' => '{myob-domain-prefix}',
