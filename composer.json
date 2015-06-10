@@ -23,12 +23,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Wheniwork\\OAuth2\\Client\\Provider\\": "src/"
+            "Tenfef\\OAuth2\\Client\\Provider\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Wheniwork\\OAuth2\\Client\\Test\\Provider\\": "tests/src/"
+            "Tenfef\\OAuth2\\Client\\Test\\Provider\\": "tests/src/"
         }
     }
 }

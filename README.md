@@ -12,7 +12,7 @@ composer require 'tenfef/oauth2-myob:dev-master'
 
 ## Usage
 
-Usage is the same as The League's OAuth client, using `Wheniwork\OAuth2\Client\Provider\MYOB` as the provider.
+Usage is the same as The League's OAuth client, using `League\OAuth2\Client\Provider\MYOB` as the provider.
 
 ### Authorization Code Flow
 
