@@ -17,7 +17,7 @@ Usage is the same as The League's OAuth client, using `League\OAuth2\Client\Prov
 ### Authorization Code Flow
 
 ```php
-$provider = new Wheniwork\OAuth2\Client\Provider\MYOB([
+$provider = new Tenfef\OAuth2\Client\Provider\MYOB([
     'clientId'     => '{myob-client-id}',
     'clientSecret' => '{myob-client-secret}',
     'domainPrefix' => '{myob-domain-prefix}',
@@ -53,7 +53,7 @@ if (!isset($_GET['code'])) {
 ## Refreshing a Token
 
 ```php
-$provider = new Wheniwork\OAuth2\Client\Provider\MYOB([
+$provider = new Tenfef\OAuth2\Client\Provider\MYOB([
     'clientId'     => '{myob-client-id}',
     'clientSecret' => '{myob-client-secret}',
     'domainPrefix' => '{myob-domain-prefix}',
@@ -65,4 +65,4 @@ $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);
 ```
 
 Hat tip to the Vend OAuth Provider which gave a good template for this Provider.
-https://github.com/wheniwork/oauth2-vend
+https://github.com/Tenfef/oauth2-vend
