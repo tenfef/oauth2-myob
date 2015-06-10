@@ -65,3 +65,4 @@ $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);
 ```
 
 Hat tip to the Vend OAuth Provider which gave a good template for this Provider.
+https://github.com/wheniwork/oauth2-vend
