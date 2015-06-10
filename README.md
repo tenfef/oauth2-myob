@@ -66,7 +66,7 @@ $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);
 
 
 ## Fetching company files from Account Right
-```
+```php
     $provider = new Tenfef\MYOB\Provider([
 		'clientId'      => 'xxxxxxxxx',
 		'clientSecret'  => 'xxxxxxxxx',
