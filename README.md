@@ -7,7 +7,7 @@ This package provides MYOB support for the PHP League's [OAuth 2.0 Client](https
 To install, use composer:
 
 ```
-composer require tenfef/oauth2-myob
+composer require 'tenfef/oauth2-myob:dev-master'
 ```
 
 ## Usage
