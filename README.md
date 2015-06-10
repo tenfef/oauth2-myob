@@ -64,5 +64,21 @@ $grant = new \League\OAuth2\Client\Grant\RefreshToken();
 $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);
 ```
 
+
+## Fetching company files from Account Right
+```
+    $provider = new Tenfef\MYOB\Provider([
+		'clientId'      => 'xxxxxxxxx',
+		'clientSecret'  => 'xxxxxxxxx',
+		'redirectUri'   => 'https://example.com',
+		'scopes'        => ['la.global CompanyFile']
+	]);
+
+	$token = 'xxxxxxxxx';
+
+	$request = new Tenfef\MYOB\AccountRight($provider, $token);
+	echo json_encode($request->companyFiles());
+```
+
 Hat tip to the Vend OAuth Provider which gave a good template for this Provider.
 https://github.com/wheniwork/oauth2-vend
