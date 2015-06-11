@@ -2,8 +2,11 @@
 
 namespace Tenfef\MYOB;
 
+use Guzzle\Http\Exception\BadResponseException;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
+use League\OAuth2\Client\Exception;
+use League\OAuth2\Client\Exception\IDPException as IDPException;
 
 class Provider extends AbstractProvider
 {
@@ -19,7 +22,7 @@ class Provider extends AbstractProvider
     public function getHeaders($token = null)
     {
         $headers = parent::getHeaders($token);
-        $headers['x-myobapi-key'] = $this->clientId;
+        $headers['x-myobapi-key'] = $this->clientId;        
         return $headers;
     }
 
@@ -51,12 +54,41 @@ class Provider extends AbstractProvider
      * @param  boolean     $as_array
      * @return array|object
      */
-    public function getApiResponse($url, $token, $as_array = true)
+    public function getApiResponse($url, $token, $username, $password)
     {        
         $headers = $this->getHeaders($token);
-        
-        $result = $this->fetchProviderData($this->base_url . $url, $headers);
-        return json_decode($result);
+
+        if ($username) {
+            $headers['x-myobapi-cftoken'] = base64_encode($username . ":" . $password);
+        }
+
+        try {
+            $client = $this->getHttpClient();
+            $client->setBaseUrl($this->base_url);
+
+            if ($headers) {                
+                $client->setDefaultOption('headers', $headers);
+            }
+
+            $request = $client->get($url)->send();
+            $response = $request->getBody();
+        } catch (BadResponseException $e) {
+            // @codeCoverageIgnoreStart
+            $response = $e->getResponse()->getBody();            
+            $result = $this->prepareResponse($response);
+            if (json_last_error())
+            {
+                throw new \Exception($response);
+            }
+            if (isset($result['Errors']))
+            {
+                $error = $result['Errors'][0];
+                throw new \Exception($error['Name'] . ": " . $error['Message']);
+            }
+        }
+
+
+        return json_decode($response);
 
     }
 }
