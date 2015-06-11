@@ -22,10 +22,10 @@
         "league/oauth2-client": "dev-master"
     },
     "repositories": [
-            {
-                "type": "vcs",
-                "url": "https://github.com/tenfef/oauth2-client"
-            }
+        {
+            "type": "vcs",
+            "url": "https://github.com/tenfef/oauth2-client"
+        }
     ],
     "autoload": {
         "psr-4": {
