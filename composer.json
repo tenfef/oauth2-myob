@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "league/oauth2-client": "dev-master@dev"
+        "league/oauth2-client": "~0.11@dev"
     },
     "repositories": [
         {
