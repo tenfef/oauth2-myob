@@ -19,14 +19,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "league/oauth2-client": "~0.11@dev"
+        "league/oauth2-client": "~0.11"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/tenfef/oauth2-client"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "Tenfef\\MYOB\\": "src/"
