@@ -17,13 +17,30 @@ class Provider extends AbstractProvider
 
     public $authorizationHeader = 'Bearer';
 
-    public $base_url = "https://api.myob.com";
+    public $base_url = "https://api.myob.com/";
 
-    public function getHeaders($token = null)
+    public function getHeaders($token = NULL, $username = NULL, $password = NULL)
     {
         $headers = parent::getHeaders($token);
         $headers['x-myobapi-key'] = $this->clientId;        
+        if ($username) {
+            $headers['x-myobapi-cftoken'] = base64_encode($username . ":" . $password);
+        }
         return $headers;
+    }
+
+    private function guzzleClient($token, $username, $password)
+    {
+        $headers = $this->getHeaders($token, $username, $password);
+
+        $client = $this->getHttpClient();
+        $client->setBaseUrl($this->base_url);
+
+        if ($headers) {                
+            $client->setDefaultOption('headers', $headers);
+        }
+
+        return $client;
     }
 
     public function urlAuthorize()
@@ -46,6 +63,30 @@ class Provider extends AbstractProvider
         return [];
     }
 
+    private function handle_exception($e)
+    {
+        // @codeCoverageIgnoreStart
+        $response = $e->getResponse()->getBody();            
+        $result = $this->prepareResponse($response);
+        if (json_last_error())
+        {            
+            throw new \Exception($response);
+        }
+        if (isset($result['Errors']))
+        {
+            $error = $result['Errors'][0];
+            $message = $error['Name'] . ": " . $error['Message'];
+            if (! empty($error['AdditionalDetails']))
+            {
+                $message .= " " . $error['AdditionalDetails'];
+            }
+            
+            throw new \Exception($message);
+        }
+
+        throw $e;
+    }
+
     /**
      * Helper method that can be used to fetch API responses.
      *
@@ -56,39 +97,38 @@ class Provider extends AbstractProvider
      */
     public function getApiResponse($url, $token, $username, $password)
     {        
-        $headers = $this->getHeaders($token);
-
-        if ($username) {
-            $headers['x-myobapi-cftoken'] = base64_encode($username . ":" . $password);
-        }
-
-        try {
-            $client = $this->getHttpClient();
-            $client->setBaseUrl($this->base_url);
-
-            if ($headers) {                
-                $client->setDefaultOption('headers', $headers);
-            }
-
+        try {        
+            $client = $this->guzzleClient($token, $username, $password);
             $request = $client->get($url)->send();
             $response = $request->getBody();
-        } catch (BadResponseException $e) {
-            // @codeCoverageIgnoreStart
-            $response = $e->getResponse()->getBody();            
-            $result = $this->prepareResponse($response);
-            if (json_last_error())
-            {
-                throw new \Exception($response);
-            }
-            if (isset($result['Errors']))
-            {
-                $error = $result['Errors'][0];
-                throw new \Exception($error['Name'] . ": " . $error['Message']);
-            }
+        } catch (BadResponseException $e) {            
+            $response = $this->handle_exception($e);
         }
 
-
         return json_decode($response);
+    }    
 
+    public function postFullResponse($URI, $data, $token, $username, $password)
+    {
+        try {                    
+            $client = $this->guzzleClient($token, $username, $password);
+            $options = [
+                'content-type' => 'application/json'
+            ];
+            $request = $client->post($URI, $options)->setBody(json_encode($data))->send();            
+            
+        } catch (BadResponseException $e) {            
+            $responseBody = $this->handle_exception($e);
+        }
+
+        return $request;
     }
+
+    public function post($URI, $data, $token, $username, $password)
+    {        
+        $response = $this->postFullResponse($URI, $data, $token, $username, $password);
+
+        return json_decode($response->getBody());
+    }
+
 }

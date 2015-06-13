@@ -12,23 +12,38 @@ class AccountRight
         $this->password = $password;
     }
 
-    function fetch($url)
+    function fetch($uri)
     {
-        return $this->provider->getApiResponse($url, $this->token, $this->username, $this->password);
+        return $this->provider->getApiResponse($uri, $this->token, $this->username, $this->password);
     }
 
-    function companyFiles()
+    function fetchWithPagination($uri)
     {
-        return $this->fetch("/accountright");
+        $result = $this->fetch($uri);
+        if (! isset($result->Items))
+        {
+            throw new Exception("Items not found in result", 1);            
+        }
+
+        $items = $result->Items;
+        if (! empty($result->NextPageLink))
+        {            
+            $result = $this->fetchWithPagination($result->NextPageLink);
+            $items = array_merge($items, $result);
+        }
+        
+        return $items;
     }
 
-    function contacts($companyID)
+    function post($URI, $data)
     {
-        return $this->fetch("/accountright/" . $companyID . "/Contact");
+        return $this->provider->post("/accountright/" . $URI, $data, $this->token, $this->username, $this->password);
     }
 
-    function companyDetails($companyID)
+    function postFullResponse($URI, $data)
     {
-        return $this->fetch("/accountright/" . $companyID . "/Company");        
+        return $this->provider->postFullResponse("/accountright/" . $URI, $data, $this->token, $this->username, $this->password);
     }
+
+    
 }
