@@ -2,7 +2,7 @@
 
 namespace Tenfef\MYOB;
 
-class AccountRight 
+class AccountRightRequest
 {       
     function __construct($provider, $token, $username = NULL, $password = NULL)
     {
