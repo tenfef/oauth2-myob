@@ -21,8 +21,8 @@ class AccountRightRequest
     {
         $result = $this->fetch($uri);
         if (! isset($result->Items))
-        {
-            throw new Exception("Items not found in result", 1);            
+        {            
+            return $result;
         }
 
         $items = $result->Items;
@@ -38,6 +38,16 @@ class AccountRightRequest
     function post($URI, $data)
     {
         return $this->provider->post("/accountright/" . $URI, $data, $this->token, $this->username, $this->password);
+    }
+
+    function put($URI, $data)
+    {
+        return $this->provider->put("/accountright/" . $URI, $data, $this->token, $this->username, $this->password);
+    }
+
+    function delete($URI)
+    {
+        return $this->provider->delete("/accountright/" . $URI, $this->token, $this->username, $this->password);
     }
 
     function postFullResponse($URI, $data)

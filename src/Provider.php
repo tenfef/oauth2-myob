@@ -24,8 +24,8 @@ class Provider extends AbstractProvider
         $headers = parent::getHeaders($token);
         $headers['x-myobapi-key'] = $this->clientId;        
         if ($username) {
-            $headers['x-myobapi-cftoken'] = base64_encode($username . ":" . $password);
-        }
+            $headers['x-myobapi-cftoken'] = base64_encode($username . ":" . $password);            
+        }        
         return $headers;
     }
 
@@ -127,6 +127,52 @@ class Provider extends AbstractProvider
     public function post($URI, $data, $token, $username, $password)
     {        
         $response = $this->postFullResponse($URI, $data, $token, $username, $password);
+
+        return json_decode($response->getBody());
+    }
+
+    public function putFullResponse($URI, $data, $token, $username, $password)
+    {
+        try {                    
+            $client = $this->guzzleClient($token, $username, $password);
+            $options = [
+                'content-type' => 'application/json'
+            ];
+            $request = $client->put($URI, $options)->setBody(json_encode($data))->send();            
+            
+        } catch (BadResponseException $e) {            
+            $responseBody = $this->handle_exception($e);
+        }
+
+        return $request;
+    }
+
+    public function put($URI, $data, $token, $username, $password)
+    {        
+        $response = $this->putFullResponse($URI, $data, $token, $username, $password);
+
+        return json_decode($response->getBody());
+    }
+
+    public function deleteFullResponse($URI, $token, $username, $password)
+    {
+        try {                    
+            $client = $this->guzzleClient($token, $username, $password);
+            $options = [
+                'content-type' => 'application/json'
+            ];
+            $request = $client->delete($URI, $options)->send();
+            
+        } catch (BadResponseException $e) {            
+            $responseBody = $this->handle_exception($e);
+        }
+
+        return $request;
+    }
+
+    public function delete($URI, $token, $username, $password)
+    {        
+        $response = $this->deleteFullResponse($URI, $token, $username, $password);
 
         return json_decode($response->getBody());
     }
