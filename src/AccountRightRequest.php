@@ -16,6 +16,16 @@ class AccountRightRequest
     {
         return $this->provider->getApiResponse($uri, $this->token, $this->username, $this->password);
     }
+    
+    public function fetchFullResponse($uri)
+    {
+        return $this->provider->getFullResponse(
+            $uri,
+            $this->token,
+            $this->username,
+            $this->password
+        );
+    }
 
     function fetchWithPagination($uri)
     {
