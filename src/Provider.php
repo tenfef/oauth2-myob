@@ -107,6 +107,11 @@ class Provider extends AbstractProvider
 
         return json_decode($response);
     }    
+    
+    public function getFullResponse($url, $token, $username, $password) {
+        $client = $this->guzzleClient($token, $username, $password);
+        return $client->get($url)->send();
+    }
 
     public function postFullResponse($URI, $data, $token, $username, $password)
     {
